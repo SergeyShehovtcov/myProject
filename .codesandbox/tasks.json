@@ -1,11 +1,27 @@
 {
   "tasks": {
+    "client: instlall": {
+      "name": "client: install",
+      "command": "cd client && npm install"
+    },
     "client: start": {
       "name": "client: start",
       "command": "cd client && npm run start",
       "runAtStart": true,
       "preview": {
         "port": 2233
+      }
+    },
+    "server: install": {
+      "name": "server: install",
+      "command": "cd server && npm install"
+    },
+    "server: start": {
+      "name": "server: start",
+      "command": "cd server && npm run start",
+      "runAtStart": true,
+      "preview": {
+        "port": 5000
       }
     }
   }
