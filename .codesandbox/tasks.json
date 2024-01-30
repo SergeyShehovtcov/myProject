@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "client: start": {
+      "name": "client: start",
+      "command": "cd client && npm run start",
+      "runAtStart": true,
+      "preview": {
+        "port": 2233
+      }
+    }
+  }
+}
