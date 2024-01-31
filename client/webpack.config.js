@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const port = 2233;
 const dist = path.join(__dirname, 'dist');
 const src = path.join(__dirname, 'src');
-const host = 'localhost';
+const host = '80.87.109.233';
 
 module.exports = (_, args) => {
   return {
