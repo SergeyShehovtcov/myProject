@@ -21,11 +21,10 @@ const App = observer(() => {
       .finally(() => setLoading(false))
       .catch((e) => console.log(e));
   }, []);
-
+  
   if (loading) {
     return <Spinner animation={"grow"} />;
   }
-
   return (
     <BrowserRouter>
       <NavBar />

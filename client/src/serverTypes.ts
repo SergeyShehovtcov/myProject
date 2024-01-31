@@ -35,6 +35,7 @@ export type User = {
   id: number;
   email: string;
   password: string;
+  newPassword: string;
   role: string;
   createdAt: string;
   updatedAt: string;
