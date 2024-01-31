@@ -12,6 +12,7 @@ const NavBar: FC = observer((): ReactElement => {
   const logOut = (): void => {
     user.setUser({});
     user.setIsAuth(false);
+    localStorage.removeItem("token");
   };
 
   return (
