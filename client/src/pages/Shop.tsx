@@ -1,27 +1,35 @@
 import React, { FC, ReactElement, useContext, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import { Col, Container, Row } from "react-bootstrap";
+
 import BrandBar from "src/components/BrandBar";
 import CategoryBar from "src/components/CategoryBar";
 import ProductList from "src/components/ProductList";
-import {
-  fetchCategories,
-  fetchBrands,
-  fetchProducts,
-} from "src/http/productApi";
+import Pages from "src/components/Pages";
+import { fetchCategories, fetchBrands, fetchProducts } from "src/http/productApi";
 import { Context } from "src/index";
-import { observer } from "mobx-react-lite";
+
 
 const Shop: FC = observer((): ReactElement => {
+  
   const { product } = useContext(Context);
 
   useEffect(() => {
     fetchCategories().then((data) => product.setCategories(data));
     fetchBrands().then((data) => product.setBrands(data));
-    fetchProducts(null, null, 1, 2).then((data) => {
+    fetchProducts(null, null, 1, 4).then((data) => {
       product.setProducts(data.rows);
       product.setTotalCount(data.count);
     });
   }, []);
+
+  useEffect(() => {
+    console.log("selectedCategory: ", product.selectedCategory)
+    fetchProducts(product.selectedCategory?.id, product.selectedBrand?.id, product.page, 4).then((data) => {
+      product.setProducts(data.rows);
+      product.setTotalCount(data.count);
+    });
+  }, [product.page, product.selectedCategory, product.selectedBrand]);
 
   return (
     <Container>
@@ -32,6 +40,7 @@ const Shop: FC = observer((): ReactElement => {
         <Col md={9}>
           <BrandBar />
           <ProductList />
+          <Pages />
         </Col>
       </Row>
     </Container>

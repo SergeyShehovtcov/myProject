@@ -19,7 +19,7 @@ export default class ProductStore {
     this._selectedBrand = null;
     this._page = 1;
     this._totalCount = 0;
-    this._limit = 3;
+    this._limit = 4;
     makeAutoObservable(this);
   }
 
@@ -64,10 +64,12 @@ export default class ProductStore {
   }
 
   get selectedCategory(): Category {
+    this.setPage(1);
     return this._selectedCategory;
   }
 
   get selectedBrand(): Brand {
+    this.setPage(1);
     return this._selectedBrand;
   }
 
