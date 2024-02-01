@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink, useHistory } from "react-router-dom";
-import { ADMIN_ROUTE, PROFILE_ROUTE, SHOP_ROUTE } from "src/utils/constants";
+import { ADMIN_ROUTE, PROFILE_ROUTE, SHOP_ROUTE, BASKET_ROUTE } from "src/utils/constants";
 import { Context } from "src/index";
 
 const NavBar: FC = observer((): ReactElement => {
@@ -31,13 +31,21 @@ const NavBar: FC = observer((): ReactElement => {
             </Button>
             <Button
               variant={"outline-light"}
+              className="ml-3"
               onClick={() => history.push(PROFILE_ROUTE)}
             >
               Профиль
             </Button>
             <Button
               variant={"outline-light"}
-              className="ml-2"
+              className="ml-3"
+              onClick={() => history.push(BASKET_ROUTE)}
+            >
+              Корзина
+            </Button>
+            <Button
+              variant={"outline-light"}
+              className="ml-3"
               onClick={() => logOut()}
             >
               Выйти
