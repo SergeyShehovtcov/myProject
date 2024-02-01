@@ -28,3 +28,17 @@ export const check = async () => {
   localStorage.setItem("token", data);
   return jwt_decode(data);
 };
+
+export const updateProfile = async (
+  email: string,
+  password: string,
+  role: string
+): Promise<string>  => {
+  const { data } = await $authHost.post("/api/user/profile", {
+    email,
+    password,
+    role,
+  });
+  localStorage.setItem("token", data.token);
+  return jwt_decode(data.token);
+};

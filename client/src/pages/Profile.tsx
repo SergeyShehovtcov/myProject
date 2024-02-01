@@ -1,16 +1,30 @@
 import { observer } from "mobx-react-lite";
-import React, { FC, ReactElement, useContext, useState } from "react";
+import React, { FC, ReactElement, useContext } from "react";
 import { Container, Row, Form, Dropdown, Button } from "react-bootstrap";
 
 import { Context } from "src/index";
+import { updateProfile } from "src/http/userApi";
 
 const Profile: FC = observer((): ReactElement => {
     const { user } = useContext(Context).user;
     const roles: string[] = ["USER", "ADMIN"];
 
+    const changeEmail = (email: string): void => {
+        user.email = email;
+    };
 
     const changeRole = (role: string): void => {
         user.role = role;
+    };
+
+    const changeProfile = async () => {
+        try {
+            //data = await updateProfile(user.email, user.password, user.role);
+            //user.setUser(user);
+            //user.setIsAuth(true);
+        } catch (e) {
+            alert(e.response.data.message);
+        }
     };
 
     return(
@@ -21,7 +35,7 @@ const Profile: FC = observer((): ReactElement => {
                       <Form.Control
                         value={user.email}
                         className="mt-3"
-                        disabled
+                        onChange={e => changeEmail(e.target.value)}
                     />
 
                     <Dropdown className="mt-2 mb-2">
@@ -52,7 +66,7 @@ const Profile: FC = observer((): ReactElement => {
                     />
                     <hr />
 
-                    <Button variant="outline-dark">
+                    <Button variant="outline-dark" onClick={() => changeProfile()}>
                         Обновить профиль
                     </Button>
                 </Form>
