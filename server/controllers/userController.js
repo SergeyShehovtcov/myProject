@@ -10,6 +10,7 @@ const generateJwt = (id, email, role) => {
 };
 
 class UserController {
+
   async registration(req, res, next) {
     const { email, password, role } = req.body;
     if (!email || !password) {
@@ -45,6 +46,24 @@ class UserController {
   async check(req, res, next) {
     const token = generateJwt(req.user.id, req.user.email, req.user.role);
     return res.json(token);
+  }
+
+  async update(req, res, next) {
+    const { email, role, newPassword, password } = req.body;
+    if (!email || !role || !newPassword || !password) {
+      return next(ApiError.badRequest("Некорректые поля формы"));
+    }
+    const candidate = await User.findOne({ where: { email } });
+    if (!candidate) {
+      return next(ApiError.badRequest("Пользователя с таким email не существует"));
+    }
+    bcrypt.compare(password, candidate.password).then(result => {
+        if (!result)
+          return next(ApiError.badRequest("Пароли не совпадают"));
+    })
+    candidate.update({ role, password: await bcrypt.hash(newPassword, 5) });
+    const token = generateJwt(candidate.id, candidate.email, candidate.role);
+    return res.json({ token });
   }
 }
 

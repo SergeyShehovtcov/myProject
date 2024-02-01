@@ -9,19 +9,32 @@ const Profile: FC = observer((): ReactElement => {
     const { user } = useContext(Context).user;
     const roles: string[] = ["USER", "ADMIN"];
 
-    const changeEmail = (email: string): void => {
-        user.email = email;
+    const changeRole = (role: string): void => {
+        console.log("role>>>", role);
+        user.role = role;
+        console.log("user.role>>>", user.role);
     };
 
-    const changeRole = (role: string): void => {
-        user.role = role;
+    const changeNewPassword = (password: string): void => {
+        console.log("password>>>", password);
+        user.newPassword = password;
+        console.log("user.newPassword", user.newPassword);
+    };
+
+    const changeCurrentPassword = (password: string): void => {
+        console.log("password>>>", password);
+        user.password = password;
+        console.log("user.password>>>", user.password);
     };
 
     const changeProfile = async () => {
         try {
-            //data = await updateProfile(user.email, user.password, user.role);
-            //user.setUser(user);
-            //user.setIsAuth(true);
+            console.log("user>>>", user);
+            console.log("user.email>>>", user.email);
+            console.log("user.role>>>", user.role);
+            console.log("user.newPassword>>>", user.newPassword);
+            console.log("user.password>>>", user.password);
+            const data = await updateProfile(user.email, user.role, user.newPassword, user.password)
         } catch (e) {
             alert(e.response.data.message);
         }
@@ -35,7 +48,7 @@ const Profile: FC = observer((): ReactElement => {
                       <Form.Control
                         value={user.email}
                         className="mt-3"
-                        onChange={e => changeEmail(e.target.value)}
+                        disabled
                     />
 
                     <Dropdown className="mt-2 mb-2">
@@ -58,11 +71,13 @@ const Profile: FC = observer((): ReactElement => {
                         value={user.newPassword}
                         className="mt-3"
                         placeholder="Введите новый пароль"
+                        onChange={e => changeNewPassword(e.target.value)}
                     />
                     <Form.Control
                         value={user.password}
                         className="mt-3"
                         placeholder="Введите текущий пароль"
+                        onChange={e => changeCurrentPassword(e.target.value)}
                     />
                     <hr />
 
