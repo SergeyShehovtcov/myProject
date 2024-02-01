@@ -114,7 +114,7 @@ const CreateProduct: FC<TModal> = observer(({ show, onHide }): ReactElement => {
           <Form.Control className="mt-3" type="file" onChange={selectFile} />
           <hr />
           <Button variant="outline-dark" onClick={addInfo}>
-            Добавить свойста товара
+            Добавить свойства товара
           </Button>
           {info.map((i) => (
             <Row key={i.number} className="mt-4">

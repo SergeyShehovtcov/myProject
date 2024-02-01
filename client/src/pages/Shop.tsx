@@ -11,7 +11,6 @@ import { Context } from "src/index";
 
 
 const Shop: FC = observer((): ReactElement => {
-  
   const { product } = useContext(Context);
 
   useEffect(() => {

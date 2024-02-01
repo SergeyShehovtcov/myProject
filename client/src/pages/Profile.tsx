@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { FC, ReactElement, useContext } from "react";
+import React, { FC, ReactElement, useContext, useState } from "react";
 import { Container, Row, Form, Dropdown, Button } from "react-bootstrap";
 
 import { Context } from "src/index";
@@ -10,31 +10,22 @@ const Profile: FC = observer((): ReactElement => {
     const roles: string[] = ["USER", "ADMIN"];
 
     const changeRole = (role: string): void => {
-        console.log("role>>>", role);
         user.role = role;
-        console.log("user.role>>>", user.role);
     };
 
     const changeNewPassword = (password: string): void => {
-        console.log("password>>>", password);
         user.newPassword = password;
-        console.log("user.newPassword", user.newPassword);
     };
 
     const changeCurrentPassword = (password: string): void => {
-        console.log("password>>>", password);
         user.password = password;
-        console.log("user.password>>>", user.password);
     };
 
     const changeProfile = async () => {
         try {
-            console.log("user>>>", user);
-            console.log("user.email>>>", user.email);
-            console.log("user.role>>>", user.role);
-            console.log("user.newPassword>>>", user.newPassword);
-            console.log("user.password>>>", user.password);
             const data = await updateProfile(user.email, user.role, user.newPassword, user.password)
+            user.newPassword = "";
+            user.password = "";
         } catch (e) {
             alert(e.response.data.message);
         }
@@ -43,6 +34,10 @@ const Profile: FC = observer((): ReactElement => {
     return(
         <Container className="d-flex justify-content-center align-items-center">
             <Row>
+                <div>Email: {user.email}</div>
+                <div>Роль: {user.role}</div>
+                <div>Паспорт новый: {user.newPassword}</div>
+                <div>Паспорт старый: {user.password}</div>
                 <Form>
                     <div>Ваш профиль</div>
                       <Form.Control

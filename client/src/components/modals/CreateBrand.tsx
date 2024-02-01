@@ -17,7 +17,7 @@ const CreateBrand: FC<TModal> = ({ show, onHide }): ReactElement => {
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Добавить тип
+          Добавить бренд
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
