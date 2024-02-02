@@ -1,13 +1,30 @@
 import { observer } from "mobx-react-lite";
-import React, { FC, ReactElement, useContext, useState } from "react";
-import { Container, Row, Form, Dropdown, Button } from "react-bootstrap";
+import React, { FC, ReactElement, useContext, useEffect, useState } from "react";
+import { Container, Row, Form, Dropdown, Button, Spinner } from "react-bootstrap";
 
 import { Context } from "src/index";
 import { updateProfile } from "src/http/userApi";
+import { User } from "src/serverTypes";
+import { check } from "src/http/userApi";
 
 const Profile: FC = observer((): ReactElement => {
     const { user } = useContext(Context).user;
     const roles: string[] = ["USER", "ADMIN"];
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        check()
+          .then(({ email, role }: User) => {
+            user.setUser({ email, role });
+            user.setIsAuth(true);
+          })
+          .finally(() => setLoading(false))
+          .catch((e) => console.log(e));
+      }, []);
+
+    if (loading) {
+        return <Spinner animation={"grow"} />;
+    }
 
     const changeRole = (role: string): void => {
         user.role = role;
@@ -34,10 +51,6 @@ const Profile: FC = observer((): ReactElement => {
     return(
         <Container className="d-flex justify-content-center align-items-center">
             <Row>
-                <div>Email: {user.email}</div>
-                <div>Роль: {user.role}</div>
-                <div>Паспорт новый: {user.newPassword}</div>
-                <div>Паспорт старый: {user.password}</div>
                 <Form>
                     <div>Ваш профиль</div>
                       <Form.Control

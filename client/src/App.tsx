@@ -25,7 +25,8 @@ const App = observer(() => {
   if (loading) {
     return <Spinner animation={"grow"} />;
   }
-  return (
+  
+    return (
     <BrowserRouter>
       <NavBar />
       <AppRouter />
