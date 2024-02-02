@@ -1,13 +1,15 @@
+import React, { FC, ReactElement, useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import React, { FC, ReactElement, useEffect, useState } from "react";
 import { Col, Container, Row, Image, Card, Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { fetchOneProduct } from "src/http/productApi";
 import { Product as ProductType } from "src/serverTypes";
 import { BASE_URL } from "src/utils/constants";
 import bigStar from "src/assets/bigStar.png";
+import { Context } from "src/index";
 
 const Product: FC = observer((): ReactElement => {
+  const { basket } = useContext(Context); 
   const [product, setProduct] = useState<ProductType>();
   const { id } = useParams<{ id: string }>();
 
@@ -48,8 +50,9 @@ const Product: FC = observer((): ReactElement => {
               border: "5px solid lightgray",
             }}
           >
-            <h3>От: {product?.price} руб. </h3>
-            <Button variant="outline-dark">Добавить в корзину</Button>
+            <h3>Цена: {product?.price} руб. </h3>
+            <Button variant="outline-dark" onClick={() => basket.add(product)}>Добавить в корзину </Button>
+            <h3>В корзине: ({basket.count}) ед.</h3>
           </Card>
         </Col>
       </Row>
