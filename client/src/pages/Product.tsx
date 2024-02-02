@@ -52,7 +52,7 @@ const Product: FC = observer((): ReactElement => {
           >
             <h3>Цена: {product?.price} руб. </h3>
             <Button variant="outline-dark" onClick={() => basket.add(product)}>Добавить в корзину </Button>
-            <h3>В корзине: ({basket.count}) ед.</h3>
+            <h6>{ basket.count > 0 ? `В корзине ${basket.count} ед. на сумму ${basket.sum} руб.` : "Ваша корзина пуста"}</h6>
           </Card>
         </Col>
       </Row>
