@@ -16,7 +16,7 @@ export const fetchBrands = async (): Promise<Brand[]> => {
   return data;
 };
 
-export const fetchProducts = async (categoryId: number, brandId: number, page: number, limit = 4): Promise<ResponseProductsData> => {
+export const fetchProducts = async (categoryId: number, brandId: number, page: number, limit = 3): Promise<ResponseProductsData> => {
   const { data } = await $authHost.get("api/product", {
     params: {
       categoryId,

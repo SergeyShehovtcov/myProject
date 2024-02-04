@@ -23,8 +23,7 @@ const Shop: FC = observer((): ReactElement => {
   }, []);
 
   useEffect(() => {
-    console.log("selectedCategory: ", product.selectedCategory)
-    fetchProducts(product.selectedCategory?.id, product.selectedBrand?.id, product.page, 4).then((data) => {
+    fetchProducts(product.selectedCategory?.id, product.selectedBrand?.id, product.page, 3).then((data) => {
       product.setProducts(data.rows);
       product.setTotalCount(data.count);
     });
