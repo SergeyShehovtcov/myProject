@@ -33,22 +33,21 @@ export const authRoutes: Route[] = [
     path: PROFILE_ROUTE,
     Component: Profile
   },
-  {
-    path: BASKET_ROUTE,
-    Component: Basket,
-  },
+];
+
+export const publicRoutes = [
   {
     path: SHOP_ROUTE,
     Component: Shop,
   },
-  ,
   {
     path: PRODUCT_ROUTE + "/:id",
     Component: Product,
   },
-];
-
-export const publicRoutes = [
+  {
+    path: BASKET_ROUTE,
+    Component: Basket,
+  },
   {
     path: LOGIN_ROUTE,
     Component: Auth,

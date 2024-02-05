@@ -14,9 +14,9 @@ const Basket: FC = observer((): ReactElement => {
         <Form>
             <hr />
             <Button variant="outline-dark">
-               { basket.count > 0 ? `Оформить заказ ${basket.count} ед. на сумму ${basket.sum}` : "Ваша корзина пуста"}
+               { basket?.count > 0 ? `Оформить заказ ${basket?.count} ед. на сумму ${basket?.sum}` : "Ваша корзина пуста"}
             </Button>
-            {basket.products.map((product: Product, index: number) => (
+            {basket?.products.map((product: Product, index: number) => (
               <Row key={index} className="mt-4">
                  <Col md={3}>
                     <Image width={35} height={35} src={`${BASE_URL}/${product?.img}`} />

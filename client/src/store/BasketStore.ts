@@ -17,6 +17,10 @@ export default class BasketStore {
     this._products.splice(index, 1);
   }
 
+  setProducts(products: Product[]): void {
+    this._products = products;
+  }
+
   get products(): Product[] {
     return this._products.filter((e) => e !== null);
   }

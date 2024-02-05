@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Context } from "src/index";
 import { authRoutes, publicRoutes } from "src/routes";
-import { LOGIN_ROUTE } from "src/utils/constants";
+import { SHOP_ROUTE } from "src/utils/constants";
 
 const AppRouter: FC = observer((): ReactElement => {
   const { user } = useContext(Context);
@@ -17,7 +17,7 @@ const AppRouter: FC = observer((): ReactElement => {
       {publicRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} component={Component} exact />
       ))}
-      <Redirect to={LOGIN_ROUTE} />
+      <Redirect to={SHOP_ROUTE} />
     </Switch>
   );
 });
