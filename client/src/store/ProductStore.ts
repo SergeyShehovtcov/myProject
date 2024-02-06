@@ -1,5 +1,5 @@
-import { makeAutoObservable } from "mobx";
-import { Category, Brand, Product } from "src/serverTypes";
+import { makeAutoObservable } from 'mobx';
+import { Category, Brand, Product } from 'src/serverTypes';
 
 export default class ProductStore {
   private _categories: Category[];
