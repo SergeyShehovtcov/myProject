@@ -16,7 +16,7 @@ const Shop: FC = observer((): ReactElement => {
   useEffect(() => {
     fetchCategories().then((data) => product.setCategories(data));
     fetchBrands().then((data) => product.setBrands(data));
-    fetchProducts(null, null, 1, 4).then((data) => {
+    fetchProducts(null, null, 1, 3).then((data) => {
       product.setProducts(data.rows);
       product.setTotalCount(data.count);
     });

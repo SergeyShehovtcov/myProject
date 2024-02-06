@@ -6,6 +6,7 @@ import Shop from "src/pages/Shop";
 import Auth from "src/pages/Auth";
 import Profile from "src/pages/Profile";
 import Product from "src/pages/Product";
+import Order from "src/pages/Order";
 
 import {
   ADMIN_ROUTE,
@@ -15,9 +16,8 @@ import {
   PROFILE_ROUTE,
   REGISTRATION_ROUTE,
   SHOP_ROUTE,
+  ORDER_ROUTE
 } from "src/utils/constants";
-
-
 
 type Route = {
   path: string;
@@ -33,6 +33,10 @@ export const authRoutes: Route[] = [
     path: PROFILE_ROUTE,
     Component: Profile
   },
+  {
+    path: ORDER_ROUTE,
+    Component: Order
+  }
 ];
 
 export const publicRoutes = [
