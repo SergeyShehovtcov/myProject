@@ -4,15 +4,17 @@ import { observer } from 'mobx-react-lite';
 import { Container, Row, Form, Button, Col, Image } from 'react-bootstrap';
 import { Context } from 'src/index';
 import { Product } from 'src/serverTypes';
-import { BASE_URL, LOGIN_ROUTE } from 'src/utils/constants';
+import { BASE_URL, ORDER_ROUTE } from 'src/utils/constants';
 import AuthModal from 'src/components/modals/AuthModal';
 
 const Basket: FC = observer((): ReactElement => {
   const { basket } = useContext(Context);
+  const { user } = useContext(Context);
   const [show, setShow] = useState(false);
+
   const history = useHistory();
 
-  const createOrder = (): void => {
+  const showAutnModal = (): void => {
     //history.push(LOGIN_ROUTE);
     setShow(true);
   };
@@ -31,9 +33,16 @@ const Basket: FC = observer((): ReactElement => {
       <Row>
         <Form>
           <hr />
-          <Button variant="outline-dark" onClick={createOrder}>
-            {basket?.count > 0 ? `Оформить заказ ${basket?.count} ед. на сумму ${basket?.sum}` : 'Ваша корзина пуста'}
-          </Button>
+          {user.isAuth ? (
+            <Button variant="outline-dark" onClick={() => history.push(ORDER_ROUTE)}>
+              {basket?.count > 0 ? `Оформить заказ ${basket?.count} ед. на сумму ${basket?.sum}` : 'Ваша корзина пуста'}
+            </Button>
+          ) : (
+            <Button variant="outline-dark" onClick={showAutnModal}>
+              {basket?.count > 0 ? `Оформить заказ ${basket?.count} ед. на сумму ${basket?.sum}` : 'Ваша корзина пуста'}
+            </Button>
+          )}
+
           {basket?.products.map((product: Product, index: number) => (
             <Row key={index} className="mt-4">
               <Col md={3}>
