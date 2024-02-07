@@ -44,3 +44,19 @@ export type ResponseProductsData = {
   rows: Product[];
   count: number;
 };
+export type Order = {
+  user: User;
+  cash: boolean;
+  cashless: boolean;
+  products: Product[];
+  recipient: Recipient;
+};
+export type Recipient = {
+  name: string;
+  surname: string;
+  phone: string;
+  cash: boolean;
+  cashless: boolean;
+  address: string;
+  comment: string;
+};
