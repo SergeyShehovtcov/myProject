@@ -1,8 +1,32 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement, useContext, useEffect, useState } from 'react';
 import { Container, Row, Form, Col, Button, InputGroup } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
 
-const Order: FC = (): ReactElement => {
+import { Context } from 'src/index';
+import { check } from 'src/http/userApi';
+import { User } from 'src/serverTypes';
+import Spinner from 'src/components/Spinner';
+
+const Order: FC = observer((): ReactElement => {
+  const { user } = useContext(Context).user;
   const [validated, setValidated] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+        check()
+        .then(({ id, email, role }: User) => {
+            user.setUser({ id, email, role });
+            user.setIsAuth(true);
+        })
+        .finally(() => setLoading(false))
+        .catch((e) => console.log(e));
+    }, 1000);
+  }, []);
+
+if (loading) {
+    return <Spinner />;
+}
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;
@@ -19,52 +43,71 @@ const Order: FC = (): ReactElement => {
       <Row>
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Row>
-            <Form.Group as={Col} md="4" controlId="validationCustom01">
-              <Form.Label>First name</Form.Label>
-              <Form.Control required type="text" placeholder="First name" defaultValue="Mark" />
-              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Group as={Col} md="3" controlId="validationCustom01">
+              <Form.Label>Email</Form.Label>
+              <Form.Control required type="email" placeholder="Email" defaultValue={user.email} disabled/>
             </Form.Group>
-            <Form.Group as={Col} md="4" controlId="validationCustom02">
-              <Form.Label>Last name</Form.Label>
-              <Form.Control required type="text" placeholder="Last name" defaultValue="Otto" />
-              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Group as={Col} md="3" controlId="validationCustom02">
+              <Form.Label>Имя</Form.Label>
+              <Form.Control required type="text" placeholder="Введите имя..." defaultValue="" />
+              <Form.Control.Feedback>Успех!</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">Пажалуйста введите ваше имя</Form.Control.Feedback>
             </Form.Group>
-            <Form.Group as={Col} md="4" controlId="validationCustomUsername">
-              <Form.Label>Username</Form.Label>
-              <InputGroup hasValidation>
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control type="text" placeholder="Username" aria-describedby="inputGroupPrepend" required />
-                <Form.Control.Feedback type="invalid">Please choose a username.</Form.Control.Feedback>
-              </InputGroup>
+            <Form.Group as={Col} md="3" controlId="validationCustom02">
+              <Form.Label>Фамилия</Form.Label>
+              <Form.Control required type="text" placeholder="Введите фамилию..." defaultValue="" />
+              <Form.Control.Feedback>Успех!</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">Пажалуйста введите вашу фамилию</Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group as={Col} md="3" controlId="validationCustom02">
+              <Form.Label>Моб.телефон</Form.Label>
+              <Form.Control required type="text" placeholder="+7" defaultValue="" />
+              <Form.Control.Feedback>Успех!</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">Введите телефон для связи</Form.Control.Feedback>
             </Form.Group>
           </Form.Row>
           <Form.Row>
-            <Form.Group as={Col} md="6" controlId="validationCustom03">
-              <Form.Label>City</Form.Label>
-              <Form.Control type="text" placeholder="City" required />
-              <Form.Control.Feedback type="invalid">Please provide a valid city.</Form.Control.Feedback>
+              <Form.Check 
+                type="switch"
+                id="cash"
+                label="Наличный расчет"
+              />
+          </Form.Row>
+          <Form.Row>
+              <Form.Check 
+                type="switch"
+                id="cashless"
+                label="Безналичный расчет"
+              />
+          </Form.Row>
+          <Form.Row>
+            <Form.Group as={Col} md="12" controlId="validationCustom02">
+              <Form.Label>Адрес доставки</Form.Label>
+              <Form.Control required as="textarea" rows={3}/>
+              <Form.Control.Feedback>Успех!</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">Введите адрес доставки</Form.Control.Feedback>
             </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationCustom04">
-              <Form.Label>State</Form.Label>
-              <Form.Control type="text" placeholder="State" required />
-              <Form.Control.Feedback type="invalid">Please provide a valid state.</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationCustom05">
-              <Form.Label>Zip</Form.Label>
-              <Form.Control type="text" placeholder="Zip" required />
-              <Form.Control.Feedback type="invalid">Please provide a valid zip.</Form.Control.Feedback>
+          </Form.Row>
+          <Form.Row>
+            <Form.Group as={Col} md="12" controlId="validationCustom02">
+              <Form.Label>Дополнительная информация</Form.Label>
+              <Form.Control required as="textarea" rows={3}/>
+              <Form.Control.Feedback>Успех!</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">Введите дополнительные сведения</Form.Control.Feedback>
             </Form.Group>
           </Form.Row>
           <Form.Group>
-            <Form.Check required label="Agree to terms and conditions" feedback="You must agree before submitting." />
+            <Form.Check required label="Согласие на обработку персональных данных" feedback="Вы должны согласиться перед отправкой" />
           </Form.Group>
-          <Button type="submit">Submit form</Button>
+          <Button type="submit">Оформить заказ</Button>
         </Form>
       </Row>
     </Container>
   );
-};
+});
 
 export default Order;
+function setLoading(arg0: boolean): void {
+  throw new Error('Function not implemented.');
+}
+

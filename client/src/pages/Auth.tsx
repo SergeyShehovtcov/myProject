@@ -64,6 +64,7 @@ const Auth: FC = observer((): ReactElement => {
     setMsgInputPass('none');
     setMsgNoValidPass('none');
     if (noEmptyEmail() && validEmail() && noEmptyPass() && validPassword()) {
+      
       try {
         let data;
         if (isLogin) {

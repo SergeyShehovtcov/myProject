@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, ReactElement, useContext, useEffect, useState } from "react";
-import { Container, Row, Form, Dropdown, Button, Spinner } from "react-bootstrap";
+import { Container, Row, Form, Dropdown, Button } from "react-bootstrap";
 
+import Spinner from "src/components/Spinner";
 import { Context } from "src/index";
 import { updateProfile } from "src/http/userApi";
 import { User } from "src/serverTypes";
@@ -13,17 +14,19 @@ const Profile: FC = observer((): ReactElement => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        check()
-          .then(({ email, role }: User) => {
-            user.setUser({ email, role });
-            user.setIsAuth(true);
-          })
-          .finally(() => setLoading(false))
-          .catch((e) => console.log(e));
+        setTimeout(() => {
+            check()
+            .then(({ id, email, role }: User) => {
+                user.setUser({ id, email, role });
+                user.setIsAuth(true);
+            })
+            .finally(() => setLoading(false))
+            .catch((e) => console.log(e));
+        }, 1000);
       }, []);
 
     if (loading) {
-        return <Spinner animation={"grow"} />;
+        return <Spinner />;
     }
 
     const changeRole = (role: string): void => {
@@ -40,7 +43,7 @@ const Profile: FC = observer((): ReactElement => {
 
     const changeProfile = async () => {
         try {
-            const data = await updateProfile(user.email, user.role, user.newPassword, user.password)
+            await updateProfile(user.email, user.role, user.newPassword, user.password);
             user.newPassword = "";
             user.password = "";
         } catch (e) {

@@ -1,14 +1,20 @@
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useContext } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import { Modal as TModal } from 'src/components/modals/index';
 import { useInput } from 'src/hooks/useInput';
-import { REGISTRATION_ROUTE } from 'src/utils/constants';
+import { REGISTRATION_ROUTE, ORDER_ROUTE } from 'src/utils/constants';
+import { login } from 'src/http/userApi';
+import { Context } from 'src/index';
+import { User } from 'src/serverTypes';
 
-const AuthModal: FC<TModal> = ({ show, onHide }): ReactElement => {
+const AuthModal: FC<TModal> = observer(({ show, onHide }): ReactElement => {
+  const { user } = useContext(Context);
   const email = useInput('', { isEmpty: true, minLength: 3, isEmail: true });
   const password = useInput('', { isEmpty: true, minLength: 5, maxLength: 8 });
+  const history = useHistory();
 
   const showErrorEmailMsg = (): ReactElement => {
     if (email.fucused && email.isEmpty) return <span style={{ color: 'red' }}>Email не может быть пустым</span>;
@@ -31,6 +37,16 @@ const AuthModal: FC<TModal> = ({ show, onHide }): ReactElement => {
     password.setValue('');
     password.setFocused(false);
     onHide();
+  };
+
+  const click = async() => {
+      await login(email.value, password.value)
+      .then(({id, email, role}: User) => {
+        user.setUser({id, email, role});
+        user.setIsAuth(true);
+        history.push(ORDER_ROUTE);
+      })
+      .catch(e => alert(e.response.data.message))
   };
 
   return (
@@ -67,12 +83,12 @@ const AuthModal: FC<TModal> = ({ show, onHide }): ReactElement => {
         <Button variant="outline-danger" onClick={close}>
           Закрыть
         </Button>
-        <Button disabled={!email.inputValid || !password.inputValid} variant="outline-success">
+        <Button disabled={!email.inputValid || !password.inputValid} variant="outline-success" onClick={click}>
           Войти
         </Button>
       </Modal.Footer>
     </Modal>
   );
-};
+});
 
 export default AuthModal;

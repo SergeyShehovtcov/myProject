@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { Spinner } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 
 import NavBar from 'src/components/NavBar';
 import AppRouter from 'src/components/AppRouter';
+import Spinner from 'src/components/Spinner';
 import { Context } from 'src/index';
 import { check } from 'src/http/userApi';
 import { User } from 'src/serverTypes';
@@ -16,8 +16,8 @@ const App = observer(() => {
   useEffect(() => {
     setTimeout(() => {
       check()
-        .then(({ email, role }: User) => {
-          user.setUser({ email, role });
+        .then(({ id, email, role }: User) => {
+          user.setUser({ id, email, role });
           user.setIsAuth(true);
         })
         .finally(() => setLoading(false))
@@ -26,22 +26,7 @@ const App = observer(() => {
   }, []);
 
   if (loading) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-        }}
-      >
-        <Spinner animation="border" />
-      </div>
-    );
+    return <Spinner />
   }
 
   return (
